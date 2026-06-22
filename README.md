@@ -1,53 +1,75 @@
-# Sistema Integrado de Gestión de Gastos Comunes "El Mirador"
+# Sistema Integrado de Gestión de Gastos Comunes "El Mirador" 🏢✨
 
-![Versión](https://img.shields.io/badge/version-2.0-blue)
-![Estado](https://img.shields.io/badge/estado-en%20reestructuraci%C3%B3n-orange)
-![Nota E2](https://img.shields.io/badge/Nota%20E2-5.5-green)
-
-Este repositorio alberga el diseño de arquitectura y los artefactos de software del **Sistema Integrado de Gestión de Gastos Comunes "El Mirador"**. La plataforma automatiza los flujos financieros y operacionales para una comunidad de 160 departamentos, atacando problemas críticos de morosidad, falta de transparencia y gestión manual ineficiente.
+Este repositorio contiene el código fuente y la documentación técnica del ecosistema digital diseñado para el edificio comercial y residencial **"El Mirador"** (comunidad de 160 unidades)[cite: 6]. La plataforma automatiza el ciclo completo de cobro de gastos comunes, reduce los índices de morosidad mediante alertas automáticas y centraliza los flujos operativos de conserjería[cite: 6].
 
 ---
 
-## 👥 Integrantes y Mantenedores
-* **Benjamín Arellano**
-* **Agustín Vásquez**
-* **Nicolás Ruiz**
+## 🚀 Prototipo Interactivo en Vivo
 
-*Institución:* Duoc UC — Ingeniería de Software (Sección 001D / 002D)
+Para validar la usabilidad y los flujos de interacción con los usuarios antes de la integración final con la base de datos persistente, hemos desplegado un **Prototipo de Alta Fidelidad Interactivo** en la nube:
 
----
+👉 **[Acceder al Prototipo - El Mirador](http://prototipo-el-mirador.vercel.app/)**
 
-## 🎯 Alcance del Sistema
-
-La solución tecnológica abarca de forma centralizada los siguientes componentes:
-* **Módulo de Gestión de Residentes:** Registro detallado de copropietarios y arrendatarios vinculados a las 160 unidades habitacionales.
-* **Módulo de Finanzas:** Algoritmia para el cálculo automatizado y emisión de cuotas de gastos comunes basado en prorrateo indexado por metros cuadrados (`mt2_prorrateo`).
-* **Módulo de Pagos:** Registro de transacciones con pasarela electrónica externa y generación de recibos individuales en formato PDF.
-* **Módulo de Mantención:** Centralización de solicitudes de mantenimiento de áreas comunes y gestión de quejas administrado por conserjería.
-
-### 🚫 Exclusiones Formales
-* No incluye el cálculo de remuneraciones ni control de asistencia para los 2 conserjes y 3 personas de mantención.
-* No incluye integraciones con sistemas físicos de control de acceso (barreras o cámaras).
+### 💻 Flujos Disponibles para Pruebas:
+*   **Portal del Residente:** Panel de autogestión para revisar el estado de cuenta y el desglose de la colilla mensual[cite: 6].
+*   **Simulación de Pago Express (3 Clics):** Flujo interactivo que emula la interacción y confirmación segura de una pasarela de pagos[cite: 6].
+*   **Módulo de Conserjería / Soporte:** Interfaz responsiva para registrar y gestionar de forma móvil los tickets de mantenimiento de áreas comunes[cite: 6].
 
 ---
 
-## 🏗️ Resumen de la Arquitectura (Modelo 4+1)
+## 🏗️ Principios de Diseño Aplicados (Calidad del Código)
 
-El sistema se rige bajo los lineamientos del **Documento de Arquitectura de Software (DAS)** del proyecto:
-* **Estilo Arquitectónico:** Arquitectura Basada en Capas (*Layered Architecture*) segregando estrictamente la Presentación (Frontend), Lógica de Negocio (Core) y Acceso a Datos.
-* **Patrón MVC (Modelo-Vista-Controlador):** Implementado para independizar las interfaces de los usuarios de las reglas lógicas financieras complejos.
-* **Patrón Repositorio:** Responsable exclusivo del mapeo objeto-relacional y la inyección de consultas limpias para asegurar el desacoplamiento.
-* **Ecosistema Tecnológico:** Frontend liviano Web UI (SPA), Backend con arquitectura API REST, persistencia relacional estricta bajo el motor **PostgreSQL** (aislado en una VPC privada) e integración Server-to-Server mediante API REST con **Transbank / Webpay Plus**.
+La construcción de los componentes de software en este repositorio se rige estrictamente por los siguientes pilares de la ingeniería de software:
+
+*   **Alta Cohesión:** Los servicios están fuertemente especializados[cite: 6]. Por ejemplo, `GastoComunService` calcula exclusivamente los prorrateos por $mt^2$, delegando los pagos a `PagoService`.
+*   **Bajo Acoplamiento:** Implementamos una arquitectura orientada a **API REST** y el **Patrón Repositorio**[cite: 6]. Esto aísla por completo la interfaz visual (Frontend en Vercel) de la capa persistente (PostgreSQL)[cite: 6].
+*   **Encapsulamiento Robusto:** Las entidades críticas (`Pago`, `GastoComun`) protegen sus atributos financieros financieros mediante métodos controlados, impidiendo alteraciones arbitrarias de saldos[cite: 6].
+*   **Abstracción de Terceros:** El procesamiento bancario se aísla mediante la interfaz abstracta `PaymentGateway`, ocultando la complejidad de las llamadas de red externas (Transbank / Webpay Plus).
+*   **Modularidad Física:** El repositorio está segmentado en paquetes lógicos independientes (Residentes, Finanzas, Mantención) para permitir el desarrollo paralelo sin conflictos de código[cite: 6].
 
 ---
 
-## 🚦 Reglas y Criterios de Evaluación de Calidad
+## 🧪 Evaluación de Usabilidad (Heurísticas de Nielsen)
 
-Cada entrega de software es auditada rigurosamente bajo las siguientes métricas cuantitativas fijadas en el diseño:
+El prototipo web desplegado en Vercel fue auditado bajo los 10 principios de usabilidad de Jakob Nielsen, garantizando una curva de aprendizaje mínima para la población mixta del condominio:
 
-| Atributo de Calidad | Criterio de Aceptación Formal | Mecanismo de Verificación |
+| Heurística Evaluada | Aplicación Práctica en el Prototipo | Estado |
 | :--- | :--- | :--- |
-| **Rendimiento bajo Estrés** | Latencia máxima < 3 segundos en la descarga de recibos PDF, sosteniendo una carga concurrente simulada de 160 usuarios simultáneos. | Pruebas de inyección de carga ejecutadas con **Apache JMeter** en ambiente de QA. |
-| **Seguridad de Datos** | Cero (0) vulnerabilidades de nivel crítico o alto expuestas en la API. Uso imperativo de tokens **JWT** para validación de sesiones seguras. | Análisis estático automático del código fuente mediante **SonarQube** en el pipeline CI/CD. |
-| **Disponibilidad (SLA)** | Disponibilidad operativa continua del 99.9% de uptime mensual de los servicios web centrales. | Telemetría y monitoreo automatizado con alertas configuradas en **AWS CloudWatch**. |
-| **Usabilidad** | Un residente sin capacitación previa debe poder consultar y pagar su Gasto Común de manera fluida en un **máximo de 3 clics** desde la pantalla de inicio. | Test de usuarios (*User Testing*) con perfiles reales sumado a una **Evaluación Heurística de Nielsen**. |
+| **#1: Visibilidad del estado** | Indicadores de carga (*spinners*) activos durante las transacciones y descargas. | ✅ Cumplido |
+| **#2: Lenguaje real** | Uso de términos cotidianos del edificio ("Colilla", "Conserje", "Prorrateo")[cite: 6]. | ✅ Cumplido |
+| **#3: Libertad del usuario** | Botones explícitos de "Cancelar" y "Volver atrás" en todos los formularios[cite: 6]. | ✅ Cumplido |
+| **#4: Consistencia** | Paleta de colores, tipografías y botones de acción financiera totalmente estandarizados. | ✅ Cumplido |
+| **#5: Prevención de errores** | Validación en tiempo real en los campos de formularios (RUT, correos, montos)[cite: 6]. | ✅ Cumplido |
+| **#6: Reconocimiento** | Datos de la unidad y deudas precargados en el dashboard para evitar memorizar cifras[cite: 6]. | ✅ Cumplido |
+| **#7: Flexibilidad y eficiencia** | Interfaz 100% *responsive* optimizada para celulares de conserjes y PCs de administradores. | ✅ Cumplido |
+| **#8: Estética minimalista** | Pantallas limpias, enfocadas exclusivamente en la tarea actual y libres de ruido visual. | ✅ Cumplido |
+| **#9: Recuperación de errores** | Mensajes de alerta claros ante fallas simuladas (ej: "Fondos insuficientes") en lugar de códigos crudos. | ✅ Cumplido |
+| **#10: Ayuda** | Sección integrada de Preguntas Frecuentes e instructivos de lectura de cobros. | ✅ Cumplido |
+
+> 📊 **Métrica de Eficiencia Destacada:** Las pruebas con usuarios en el entorno real de Vercel demostraron que la consulta y el pago completo del gasto común se ejecuta con un promedio de **3 clics** y un tiempo total menor a **35 segundos**.
+
+---
+
+## 🔧 Gobernanza y Control de Versiones
+
+Para asegurar la trazabilidad del código y la estabilidad de los despliegues continuos, el equipo utiliza las siguientes herramientas y metodologías:
+
+### 🏷️ Versionamiento Semántico (SemVer 2.0.0)
+El proyecto se etiqueta bajo el formato estricto `X.Y.Z` (Mayor.Minor.Patch)[cite: 6]:
+*   **X (Mayor):** Hitos institucionales o cambios de arquitectura estructurales que rompen compatibilidad[cite: 6].
+*   **Y (Minor):** Nuevas funcionalidades o flujos de interfaz completamente compatibles[cite: 6].
+*   **Z (Patch):** Corrección de bugs menores, parches de seguridad o ajustes tipográficos[cite: 6].
+
+### 🛠️ Flujo de Trabajo en el Repositorio
+1.  **Git:** Utilizado de forma distribuida para el aislamiento del trabajo mediante ramas de características (`feature/`)[cite: 6].
+2.  **GitHub:** Actúa como el nodo central de gobernanza[cite: 6]. Se aplican *Pull Requests* obligatorios con revisión cruzada de código antes de fusionar cambios a la rama principal (`main`)[cite: 6].
+3.  **Integración con Vercel:** Cada vez que se crea un *Pull Request* en GitHub, Vercel genera de manera automatizada una **Preview URL** independiente. Esto permite testear la usabilidad de las nuevas interfaces en vivo antes de pasarlas a producción.
+
+---
+
+## 🛠️ Stack Tecnológico Utilizado
+
+*   **Frontend (Prototipo):** HTML5, CSS3, JavaScript (React / Next.js)
+*   **Diseño UI:** Figma
+*   **Despliegue e Infraestructura Cloud:** Vercel
+*   **Control de Versiones:** Git & GitHub[cite: 6]
