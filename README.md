@@ -1,75 +1,63 @@
-# Sistema Integrado de Gestión de Gastos Comunes "El Mirador" 🏢✨
+# Sistema Integrado de Gestión de Gastos Comunes "El Mirador"
 
-Este repositorio contiene el código fuente y la documentación técnica del ecosistema digital diseñado para el edificio comercial y residencial **"El Mirador"** (comunidad de 160 unidades)[cite: 6]. La plataforma automatiza el ciclo completo de cobro de gastos comunes, reduce los índices de morosidad mediante alertas automáticas y centraliza los flujos operativos de conserjería[cite: 6].
+![Institución](https://img.shields.io/badge/Institución-Duoc%20UC-blue)
+![Version](https://img.shields.io/badge/Versión-3.0.0-green)
+![Despliegue](https://img.shields.io/badge/Despliegue-Vercel-black)
 
----
-
-## 🚀 Prototipo Interactivo en Vivo
-
-Para validar la usabilidad y los flujos de interacción con los usuarios antes de la integración final con la base de datos persistente, hemos desplegado un **Prototipo de Alta Fidelidad Interactivo** en la nube:
-
-👉 **[Acceder al Prototipo - El Mirador](http://prototipo-el-mirador.vercel.app/)**
-
-### 💻 Flujos Disponibles para Pruebas:
-*   **Portal del Residente:** Panel de autogestión para revisar el estado de cuenta y el desglose de la colilla mensual[cite: 6].
-*   **Simulación de Pago Express (3 Clics):** Flujo interactivo que emula la interacción y confirmación segura de una pasarela de pagos[cite: 6].
-*   **Módulo de Conserjería / Soporte:** Interfaz responsiva para registrar y gestionar de forma móvil los tickets de mantenimiento de áreas comunes[cite: 6].
+Este repositorio contiene la arquitectura de software, especificaciones técnicas y el prototipo funcional del **Sistema Integrado de Gestión de Gastos Comunes "El Mirador"**. La plataforma está diseñada para centralizar, automatizar y transparentar la administración operativa y financiera de la comunidad.
 
 ---
 
-## 🏗️ Principios de Diseño Aplicados (Calidad del Código)
+## 📋 Contexto del Problema
 
-La construcción de los componentes de software en este repositorio se rige estrictamente por los siguientes pilares de la ingeniería de software:
+El edificio “El Mirador” cuenta con **160 departamentos** y una población mixta de propietarios y arrendatarios. Actualmente, enfrenta una problemática crítica derivada de una gestión administrativa y operativa mediante procesos manuales e ineficientes. La falta de digitalización ha derivado en:
+* Altos índices de morosidad y escasez de liquidez para mantenciones esenciales.
+* Una profunda crisis de confianza y falta de transparencia entre los residentes y la administración en relación al uso de fondos.
 
-*   **Alta Cohesión:** Los servicios están fuertemente especializados[cite: 6]. Por ejemplo, `GastoComunService` calcula exclusivamente los prorrateos por $mt^2$, delegando los pagos a `PagoService`.
-*   **Bajo Acoplamiento:** Implementamos una arquitectura orientada a **API REST** y el **Patrón Repositorio**[cite: 6]. Esto aísla por completo la interfaz visual (Frontend en Vercel) de la capa persistente (PostgreSQL)[cite: 6].
-*   **Encapsulamiento Robusto:** Las entidades críticas (`Pago`, `GastoComun`) protegen sus atributos financieros financieros mediante métodos controlados, impidiendo alteraciones arbitrarias de saldos[cite: 6].
-*   **Abstracción de Terceros:** El procesamiento bancario se aísla mediante la interfaz abstracta `PaymentGateway`, ocultando la complejidad de las llamadas de red externas (Transbank / Webpay Plus).
-*   **Modularidad Física:** El repositorio está segmentado en paquetes lógicos independientes (Residentes, Finanzas, Mantención) para permitir el desarrollo paralelo sin conflictos de código[cite: 6].
+## 🚀 Alcance del Sistema (Módulos)
 
----
-
-## 🧪 Evaluación de Usabilidad (Heurísticas de Nielsen)
-
-El prototipo web desplegado en Vercel fue auditado bajo los 10 principios de usabilidad de Jakob Nielsen, garantizando una curva de aprendizaje mínima para la población mixta del condominio:
-
-| Heurística Evaluada | Aplicación Práctica en el Prototipo | Estado |
-| :--- | :--- | :--- |
-| **#1: Visibilidad del estado** | Indicadores de carga (*spinners*) activos durante las transacciones y descargas. | ✅ Cumplido |
-| **#2: Lenguaje real** | Uso de términos cotidianos del edificio ("Colilla", "Conserje", "Prorrateo")[cite: 6]. | ✅ Cumplido |
-| **#3: Libertad del usuario** | Botones explícitos de "Cancelar" y "Volver atrás" en todos los formularios[cite: 6]. | ✅ Cumplido |
-| **#4: Consistencia** | Paleta de colores, tipografías y botones de acción financiera totalmente estandarizados. | ✅ Cumplido |
-| **#5: Prevención de errores** | Validación en tiempo real en los campos de formularios (RUT, correos, montos)[cite: 6]. | ✅ Cumplido |
-| **#6: Reconocimiento** | Datos de la unidad y deudas precargados en el dashboard para evitar memorizar cifras[cite: 6]. | ✅ Cumplido |
-| **#7: Flexibilidad y eficiencia** | Interfaz 100% *responsive* optimizada para celulares de conserjes y PCs de administradores. | ✅ Cumplido |
-| **#8: Estética minimalista** | Pantallas limpias, enfocadas exclusivamente en la tarea actual y libres de ruido visual. | ✅ Cumplido |
-| **#9: Recuperación de errores** | Mensajes de alerta claros ante fallas simuladas (ej: "Fondos insuficientes") en lugar de códigos crudos. | ✅ Cumplido |
-| **#10: Ayuda** | Sección integrada de Preguntas Frecuentes e instructivos de lectura de cobros. | ✅ Cumplido |
-
-> 📊 **Métrica de Eficiencia Destacada:** Las pruebas con usuarios en el entorno real de Vercel demostraron que la consulta y el pago completo del gasto común se ejecuta con un promedio de **3 clics** y un tiempo total menor a **35 segundos**.
+El sistema es una aplicación web y móvil centralizada y bifronte:
+1. **Módulo de Gestión de Residentes:** Registro de la información de copropietarios, arrendatarios y la relación con los 160 departamentos.
+2. **Módulo de Finanzas:** Cálculo automatizado y emisión de cuotas de gastos comunes basado en prorrateo.
+3. **Módulo de Pagos:** Integración para el registro de pagos y generación de recibos digitales (PDF).
+4. **Módulo de Mantención:** Sistema centralizado de tickets para solicitudes de mantenimiento de áreas comunes y gestión de quejas, administrado por el personal de conserjería.
 
 ---
 
-## 🔧 Gobernanza y Control de Versiones
+## 🏗️ Arquitectura y Patrones
 
-Para asegurar la trazabilidad del código y la estabilidad de los despliegues continuos, el equipo utiliza las siguientes herramientas y metodologías:
+El sistema se fundamenta en el **Modelo de 4+1 Vistas** bajo un enfoque de **Arquitectura Basada en Capas** (Presentación, Aplicación/Negocio, Dominio y Persistencia).
 
-### 🏷️ Versionamiento Semántico (SemVer 2.0.0)
-El proyecto se etiqueta bajo el formato estricto `X.Y.Z` (Mayor.Minor.Patch)[cite: 6]:
-*   **X (Mayor):** Hitos institucionales o cambios de arquitectura estructurales que rompen compatibilidad[cite: 6].
-*   **Y (Minor):** Nuevas funcionalidades o flujos de interfaz completamente compatibles[cite: 6].
-*   **Z (Patch):** Corrección de bugs menores, parches de seguridad o ajustes tipográficos[cite: 6].
-
-### 🛠️ Flujo de Trabajo en el Repositorio
-1.  **Git:** Utilizado de forma distribuida para el aislamiento del trabajo mediante ramas de características (`feature/`)[cite: 6].
-2.  **GitHub:** Actúa como el nodo central de gobernanza[cite: 6]. Se aplican *Pull Requests* obligatorios con revisión cruzada de código antes de fusionar cambios a la rama principal (`main`)[cite: 6].
-3.  **Integración con Vercel:** Cada vez que se crea un *Pull Request* en GitHub, Vercel genera de manera automatizada una **Preview URL** independiente. Esto permite testear la usabilidad de las nuevas interfaces en vivo antes de pasarlas a producción.
+### Patrones Aplicados:
+* **Modelo-Vista-Controlador (MVC):** Separa la interfaz del residente de la lógica de negocio.
+* **Patrón Repositorio:** Centraliza y estandariza las consultas hacia la base de datos de forma segura, aislando los errores.
 
 ---
 
-## 🛠️ Stack Tecnológico Utilizado
+## 🌐 Enlaces del Proyecto
 
-*   **Frontend (Prototipo):** React, TypeScript, vite, Google Gemini API)
-*   **Diseño UI:** Stitch Ai
-*   **Despliegue e Infraestructura Cloud:** Vercel
-*   **Control de Versiones:** Git & GitHub[cite: 6]
+* **Prototipo Funcional (Vercel):** [https://prototipo-el-mirador.vercel.app/](https://prototipo-el-mirador.vercel.app/)
+* **Presentación (Canva):** [https://www.canva.com/design/DAHKnpnAzVI/iJ9Lk--olN-AOLqbMJkh4Q/edit](https://www.canva.com/design/DAHKnpnAzVI/iJ9Lk--olN-AOLqbMJkh4Q/edit)
+
+---
+
+## 📊 Requisitos No Funcionales Críticos
+
+* **Rendimiento:** Tiempos de carga menores a 3 segundos, soportando los picos de tráfico de los 160 departamentos durante los primeros 5 días del mes.
+* **Seguridad:** Protección rigurosa de datos mediante autenticación segura, limitando la visualización a la propia deuda.
+* **Disponibilidad:** Acceso 24/7 para permitir la emisión de tickets de emergencia fuera de horario.
+* **Usabilidad:** Interfaz sumamente intuitiva y fácil de aprender, permitiendo realizar el pago en un máximo de 3 clics (validado mediante Evaluación Heurística de Nielsen).
+
+---
+
+## ⚙️ Control de Versiones
+
+* **Modelo de Versionamiento:** Versionamiento Semántico (SemVer). Comunica de forma explícita el impacto y la compatibilidad que contiene cada cambio en el repositorio.
+* **Herramientas:** Se emplea **Git** para la alta eficiencia en la gestión de ramas locales y **GitHub** para la gobernanza del código en la nube (Reglas de Protección de Ramas y automatización CI/CD).
+
+---
+
+## 👥 Equipo de Desarrollo (Grupo 4)
+* **Benjamin Arellano**
+* **Agustin Vasquez**
+* **Nicolas Ruiz**
