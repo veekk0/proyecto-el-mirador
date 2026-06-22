@@ -69,7 +69,7 @@ El proyecto se etiqueta bajo el formato estricto `X.Y.Z` (Mayor.Minor.Patch)[cit
 
 ## 🛠️ Stack Tecnológico Utilizado
 
-*   **Frontend (Prototipo):** HTML5, CSS3, JavaScript (React / Next.js)
-*   **Diseño UI:** Figma
+*   **Frontend (Prototipo):** React, TypeScript, vite, Google Gemini API)
+*   **Diseño UI:** Stitch Ai
 *   **Despliegue e Infraestructura Cloud:** Vercel
 *   **Control de Versiones:** Git & GitHub[cite: 6]
